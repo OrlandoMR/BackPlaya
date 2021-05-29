@@ -1,26 +1,31 @@
 const { response } = require('express');
 const User = require('../models/user.model');
 const bcryptjs = require('bcryptjs');
-const { validationResult } = require('express-validator');
 
-const usersGet = async(req, res = response) => {
+const usersGet = async(req, res = reponse) => {
 
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(404).send(errors);
-    }
-    const { name, email, password } = req.body;
-    const user = new User({ name, email, password });
+    const { limit = 20, from = 0 } = req.query;
+
+    const resp = await Promise.all([
+        User.countDocuments(),
+        User.find()
+        .skip(Number(from))
+        .limit(Number(limit))
+    ])
+
+    const [total, users] = resp;
+
+    res.json({
+        total,
+        users
+    })
+}
+
+const usersPost = async(req, res = response) => {
+
+    const { name, email, password, rol } = req.body;
+    const user = new User({ name, email, password, rol });
     console.log(user);
-    //Verificar correo
-    emailExist = await User.findOne({ email });
-    if (emailExist) {
-        return res.status(400).json({
-            msg: 'Este correo ya existe.'
-        })
-
-    }
-
 
     //Encriptar la contraseña
     const salt = bcryptjs.genSaltSync();
@@ -35,5 +40,6 @@ const usersGet = async(req, res = response) => {
 }
 
 module.exports = {
-    usersGet
+    usersGet,
+    usersPost
 }
