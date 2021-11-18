@@ -21,6 +21,18 @@ const usersGet = async(req, res = reponse) => {
     })
 }
 
+const userGet = async(req, res = reponse) => {
+
+    const { id } = req.params;
+    console.log(id)
+
+    const user = await User.findById(id)
+
+    res.json({
+        user
+    })
+}
+
 const usersPost = async(req, res = response) => {
 
     const { name, email, password, rol } = req.body;
@@ -41,5 +53,6 @@ const usersPost = async(req, res = response) => {
 
 module.exports = {
     usersGet,
+    userGet,
     usersPost
 }

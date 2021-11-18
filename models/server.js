@@ -8,6 +8,11 @@ class Server {
         this.app = express();
         this.port = process.env.PORT;
 
+        this.userPath = '/api/users';
+        this.authPath = '/api/auth';
+        this.umbrellaPath = '/api/umbrella';
+        this.paymentPath = '/api/payment';
+        this.comboPath = '/api/combo';
 
         this.connectDB();
         this.middlewares();
@@ -29,7 +34,11 @@ class Server {
     }
 
     routes() {
-        this.app.use('/api/users', require('../routes/users'))
+        this.app.use(this.authPath, require('../routes/auth'));
+        this.app.use(this.userPath, require('../routes/users'));
+        this.app.use(this.umbrellaPath, require('../routes/umbrellas'));
+        this.app.use(this.paymentPath, require('../routes/payments'));
+        this.app.use(this.comboPath, require('../routes/combos'));
     }
 
     listen() {

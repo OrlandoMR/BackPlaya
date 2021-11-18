@@ -1,22 +1,26 @@
 const { Schema, model } = require('mongoose');
 
 const PaymentSchema = Schema({
-    numberCard: {
-        type: String,
-        required: [true, 'El numero de la tarjeta es obligatorio']
+    total: {
+        type: Number,
+        required: [true, 'El total es obligatorio']
     },
-    CCV: {
-        type: String,
-        required: [true, 'El CCV es obligatorio'],
+    number: {
+        type: Number,
+        required: [true, 'El numero es obligatorio'],
         unique: true
     },
-    expireDate: {
-        type: Date,
-        required: [true, 'La fecha de expiracion es obligatoria']
+    idCombo: {
+        type: Schema.Types.ObjectId
     },
-    userId: {
-        type: Integer,
-        required: true,
+    idUmbrella: {
+        type: Schema.Types.ObjectId
+    },
+    idUser: {
+        type: Schema.Types.ObjectId
+    },
+    fecha: {
+        type: Date
     }
 })
 
